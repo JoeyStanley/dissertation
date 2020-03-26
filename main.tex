@@ -1,0 +1,318 @@
+% UGA Dissertation Template
+% Changes to official template by Kyle Krafka (December 2015)
+
+% Joey found this dissertation here: https://github.com/kjkjava/uga-dissertation-template
+% Joey found this citation style here: https://github.com/semprag/biblatex-sp-unified
+
+
+
+
+% General layout ---------------------------------------------------------------
+
+% The notitlepage option prevents \maketitle from resetting page numbering, below.
+\documentclass[11pt,notitlepage,twoside]{report}
+\usepackage{Style/kyle}
+\usepackage{Style/joey}
+
+% Allows for one-page landscape pages
+\usepackage{pdflscape}
+
+
+
+
+
+% Characters  ------------------------------------------------------------------
+
+% Makes special characters work in the bibliography.
+\usepackage[utf8]{inputenc}
+
+% Allow for checkmark, which is \ding{55}
+\usepackage{pifont}
+
+% For the degree symbol.
+\usepackage{gensymb}
+
+
+
+% Packages I don't understand yet-----------------------------------------------
+
+\usepackage{fullpage}
+% Added nottoc option to remove "Contents"
+\usepackage[nottoc]{tocbibind}
+\usepackage{wrapfig}
+% Allows you to click on references in the PDF.
+\usepackage[hidelinks]{hyperref}
+% Allows for an appendix, which should appear in the table of contents.
+\usepackage[toc]{appendix}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+
+% Overall page layout ----------------------------------------------------------
+
+\usepackage[bindingoffset=6mm]{geometry}
+
+% Use this geometry for the frontmatter
+\geometry{paperwidth=8.5in,
+          paperheight=11in,
+          left=1in,
+          right=1in,
+          top=1in,
+          bottom=1.25in}
+
+% Typography -------------------------------------------------------------------
+
+% Serif fonts
+%https://www.tug.org/FontCatalogue/ebgaramond/
+\usepackage[T1]{fontenc}
+\usepackage[osf]{ebgaramond}
+
+% Chapter headings and stuff
+% http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/sectsty/sectsty.pdf
+\usepackage{sectsty}
+\allsectionsfont{\rmfamily\Large\normalfont}
+\chapterfont{\Huge\normalfont}
+%\rmfamily switches to serif font
+%\fontfamily{ptm} picks a font
+
+
+% Makes widows and orphans illegal.
+\usepackage[all]{nowidow}
+% This prevents unwanted spaces between paragraphs
+\raggedbottom
+
+
+% General spacing
+\usepackage{setspace}
+% Line spacing
+\setstretch{1.1}
+% Space between figure and text
+% \textfloatsep 0.75in
+
+
+
+% Word- and letter-spacing.
+% See http://www.khirevich.com/latex/microtype/
+\usepackage[activate={true,nocompatibility}, % activate protrusion and expansion
+            final, % enable microtype; use "draft" to disable
+            % activate tracing, kerning, and spacing
+            tracking=true, kerning=true, spacing=true,
+            % add 10% to the protrusion amount (default is 1000)
+            factor=1100,
+            % reduce stretchability/shrinkability (default is 20/20)
+            stretch=10, shrink=10]{microtype}
+\microtypecontext{spacing=nonfrench} % suppresses some warnings
+
+
+
+
+
+% Sidenotes --------------------------------------------------------------------
+
+% https://tex.stackexchange.com/questions/321874/margin-notes-with-the-same-behaviour-as-footnote
+\usepackage{marginfix}
+\usepackage{sidenotes}
+\usepackage{ragged2e} % A better version of \raggedright and will prevent overly short lines in sidenotes: https://texfaq.org/FAQ-ragright
+\renewcommand{\footnote}[1]{\sidenote{\RaggedRight\footnotesize #1}}
+\renewcommand{\footnotetext}[1]{\sidenotetext{\raggedright\footnotesize #1}}
+
+
+% Full-width figures
+% https://3d.bk.tudelft.nl/ken/en/2016/04/17/a-1.5-column-layout-in-latex.html
+\usepackage{floatrow}
+\floatsetup[widefigure]{margins=hangoutside,
+                        facing=yes,
+                        capposition=bottom}
+\floatsetup[widetable]{margins=hangoutside,
+                       facing=yes,
+                       capposition=top}
+% Then just use figure* and table* and it works perfectly.
+
+
+
+% Bibliography and citations ---------------------------------------------------
+
+% https://github.com/semprag/biblatex-sp-unified
+\usepackage[backend=biber,
+            bibstyle=biblatex-sp-unified,
+            citestyle=sp-authoryear-comp,
+            maxcitenames=3,
+            maxbibnames=99]{biblatex}
+\addbibresource{references.bib}
+
+
+
+
+
+
+
+% Figures and images -----------------------------------------------------------
+
+\usepackage{graphicx}
+
+% Allows images to be left or right aligned within an image box.
+% (See the example gams and lms in methodology chapter)
+\usepackage[export]{adjustbox}
+
+
+
+
+
+% Tables -----------------------------------------------------------------------
+
+% Allows for cells spanning multiple rows in tables
+\usepackage{multirow}
+% Dotted lines (\hdashline)
+\usepackage{arydshln}
+% Allows for full-page rotated tables
+\usepackage{rotating}
+% For aligning by decimal places
+%\usepackage{siunitx}
+%\usepackage{dcolumn}
+
+% For multiple tables in one
+\usepackage{subcaption}
+
+% Moves table captions to the top: https://tex.stackexchange.com/questions/22751/how-to-force-table-caption-on-top
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{table}
+
+
+% Linguistics packages ---------------------------------------------------------
+
+% For IPA
+\usepackage{tipa}
+\usepackage{ifxetex}
+\ifxetex
+  \usepackage{substitutefont}
+  \substitutefont{T3}{\rmdefault}{cmr}
+\fi
+
+
+% https://tex.stackexchange.com/questions/50924/how-can-i-make-latex-number-my-quotes
+% For numbered quotes
+\usepackage{enumitem}
+% Set max nesting depth
+\newlist{quoteCounter}{enumerate}{2}
+% Use numbers for level 1
+\setlist[quoteCounter,1]{label=(\arabic*)}
+\newenvironment{num_quote}{%
+    \begin{quoteCounter}[resume=*,series=MyQuoteSeries]%
+    \item \begin{quote}
+    }{
+    \end{quote}
+    \end{quoteCounter}
+}%
+
+
+
+% Title and author -------------------------------------------------------------
+
+%\newcommand{\dissertationtitle}{A Dynamic Analysis of the \\ Elsewhere Shift in Cowlitz County}
+\newcommand{\dissertationtitle}{Vowel Dynamics of the Elsewhere Shift: \\ A Sociophonetic Analysis of English in \\ Cowlitz County, Washington}
+\newcommand{\myname}{Joseph A. Stanley}
+
+
+
+
+
+
+
+\begin{document}
+
+% Make the hyphens word and prevent overfull boxes
+\sloppy
+
+% Microtype adds a little too much space between small caps (or maybe it adds additional space on top of what LaTeX already adds). Either way, this makes them a little better.
+\SetTracking{encoding=*, shape=sc}{40}
+
+\pagenumbering{roman}
+\pagestyle{empty}
+
+
+
+% Assemble the frontmatter -----------------------------------------------------
+
+\clearpage\input{Body/1_Frontmatter/01_abstract_page.tex}
+\clearpage\input{Body/1_Frontmatter/02_title_page.tex}
+\clearpage\input{Body/1_Frontmatter/03_copyright.tex}
+\clearpage\input{Body/1_Frontmatter/04_approval_page.tex}
+
+% Now switch to the sidenote geometry
+% Body text is 8.75 by 4.65
+\newgeometry{
+    top = 1in,
+    bottom = 1.25in,
+    inner = 1.25in,
+    outer = 2.6in, % = total width of right margin, sidenote, and separator
+    marginparwidth = 1.5in,
+    marginparsep = 0.1in
+}
+\savegeometry{sidenote}
+
+% Acknowledgements
+\clearpage\input{Body/1_Frontmatter/07_acknowledgments.tex}
+
+
+% Table of contents and stuff --------------------------------------------------
+
+% Allows subsections in the TOC
+\setcounter{tocdepth}{1} % <- change to 3 when printing
+% Make numbers better aligned: http://www.khirevich.com/latex/microtype/
+\microtypesetup{protrusion=false}
+% \tableofcontents
+% \listoffigures
+% \listoftables
+\microtypesetup{protrusion=true}
+
+
+
+% Chapters ---------------------------------------------------------------------
+\clearpage
+\pagestyle{plain}
+\pagenumbering{arabic}
+\input{Body/2_Chapters/01_introduction.tex}   % 4,544 words
+\clearpage\input{Body/2_Chapters/02_lit_review.tex}     % 6,951 words
+\clearpage\input{Body/2_Chapters/03_cowlitz_county.tex} % 8,135 words
+\clearpage\input{Body/2_Chapters/04_methodology.tex}    % 15,298 words
+\clearpage\input{Body/2_Chapters/05_preobstruent.tex}   % 6,358 words
+\clearpage\input{Body/2_Chapters/06_prenasal.tex}       % 8,200 words
+\clearpage\input{Body/2_Chapters/07_lowback.tex}        % 5,292 words
+\clearpage\input{Body/2_Chapters/08_discussion.tex}     % 7,229 words
+\clearpage\input{Body/2_Chapters/09_conclusion.tex}     % 2,171 words
+                                             % 64,178 total words (Dec 6, 19)
+
+
+
+% Appendices -------------------------------------------------------------------
+
+\begin{appendices}
+
+	\clearpage\input{Body/3_Appendices/01_reading_passages.tex} % 4 pages
+	\clearpage\input{Body/3_Appendices/02_stopwords.tex}        % 1 page
+  \clearpage\input{Body/3_Appendices/03_lowback.tex}
+	\clearpage\input{Body/3_Appendices/04_model_summaries.tex}
+	\clearpage\input{Body/3_Appendices/05_model_comparisons.tex}
+	\clearpage\input{Body/3_Appendices/06_difference_smooths.tex} % 20 pages
+
+\end{appendices}
+
+
+
+
+% Bibliography -----------------------------------------------------------------
+
+\newpage
+
+
+% https://github.com/semprag/biblatex-sp-unified
+%\nocite{*}
+\restoregeometry
+\clearpage\printbibliography
+% No Q, X
+
+% Colophon ---------------------------------------------------------------------
+%
+% %\input{Body/3_Appendices/colophon.tex}
+
+\end{document}

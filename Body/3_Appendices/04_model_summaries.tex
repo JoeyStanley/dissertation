@@ -1,0 +1,675 @@
+\chapter{Model Summaries}
+\label{appendix:model_summaries}
+
+As described in \S\ref{gamms_in_this_study}, I used generalized additive mixed-effects models to analyze formant measurements extracted at 11 equally-spaced points along each vowel's duration. This appendix contains the model summaries for the final models used in this study. These tables are long, complex, and difficult to interpret. Nevertheless, they are included here in an effort to make my methods more transparent.
+
+For all vowels, I used the following block of code to fit the model.
+\begin{verbatim}
+mdl_seed <- mgcv::bam(hz_anae ~
+    s(percent, by = formant_sex_gen, k = 4) +
+    formant_sex_gen +
+    log(dur) * formant_sex_gen +
+    s(formant_word,    bs = "re") +
+    s(formant_speaker, bs = "re"),
+  data = df, discrete = TRUE)
+rho <- start_value_rho(mdl_seed)
+mdl <- update(mdl_seed, rho = rho,
+              AR.start = df$start_event)
+\end{verbatim}
+First, it fits a GAMM to the data without accounting for autocorrelation. Then, a rho value, which is the AR1 correlation parameter, is extracted from that model. The model is then rerun with that rho value to control for autocorrelation (see \citealt{soskuthy_etal_2018} for details on this method). The original model is discarded and model that accounts for the autocorrelation is retained for analysis.
+
+When interpreting the output tables, the parametric terms appear at top, first without interactions and then when interacting with the log-transformed duration. In this data, the F1 values for the female Baby Boomers were set as the reference value because they are the group with the most data. The significance stars used here represent their standard values:
+\begin{center}
+    \textit{p} $<$  0.001: *** \hspace{1em}
+    \textit{p} $<$  0.01: **   \hspace{1em}
+    \textit{p} $<$  0.05: *    \hspace{1em}
+    \textit{p} $<$  0.1: .
+\end{center}
+When parametric terms are significant, they is interpreted to mean that their lines are ``significantly wiggly'' (see the ``test'' vignette in the \texttt{itsadug} package in R).
+
+The second portion of each table shows the summary statistics for different levels of the the smooth term. In nearly every case, the \textit{p}-values are very low, but this information is insufficient to determine the shape of the curves or whether curves are statistically different from one another. For this reason, I use model comparisons (Appendix \ref{appendix:model_comarisons}) to determine whether predictors are significant and visualizations of difference smooths (Appendix \ref{appendix:difference_smooths}) to identify whether the differences between these predictors are significant.
+
+
+
+
+% BAT ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l }
+    \multicolumn{6}{l}{Parametric coefficients:}\\
+    \\
+     & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+    Intercept (F1 Female Baby Boomer)                                     &  7.547491  & 0.101174 & 74.599 & $<$ 0.001 & *** \\
+    {}F1 Female Generation X                 &  0.223984  & 0.162755 &  1.376 &     0.169 &     \\
+    {}F1 Female Millennial           &  0.075887  & 0.143971 &  0.527 &     0.598 &     \\
+    {}F1 Female Silent               & -0.624540  & 0.182990 & -3.413 & $<$ 0.001 & *** \\
+    {}F1 Male Baby Boomer               & -0.446437  & 0.148405 & -3.008 &     0.003 & **  \\
+    {}F1 Male Generation X                 & -0.017448  & 0.159217 & -0.110 &     0.913 &     \\
+    {}F1 Male Millennial           &  0.102138  & 0.186073 &  0.549 &     0.583 &     \\
+    {}F1 Male Silent               & -0.830631  & 0.158369 & -5.245 & $<$ 0.001 & *** \\
+    {}F2 Female Baby Boomer               &  3.887169  & 0.143082 & 27.167 & $<$ 0.001 & *** \\
+    {}F2 Female Generation X                 &  3.854905  & 0.165536 & 23.287 & $<$ 0.001 & *** \\
+    {}F2 Female Millennial           &  3.629437  & 0.146679 & 24.744 & $<$ 0.001 & *** \\
+    {}F2 Female Silent               &  4.132555  & 0.185317 & 22.300 & $<$ 0.001 & *** \\
+    {}F2 Male Baby Boomer               &  4.571407  & 0.151891 & 30.097 & $<$ 0.001 & *** \\
+    {}F2 Male Generation X                 &  4.089959  & 0.161810 & 25.276 & $<$ 0.001 & *** \\
+    {}F2 Male Millennial           &  4.634103  & 0.188157 & 24.629 & $<$ 0.001 & *** \\
+    {}F2 Male Silent               &  4.591504  & 0.161266 & 28.472 & $<$ 0.001 & *** \\
+    log(duration)                                        &  0.331615  & 0.025927 & 12.791 & $<$ 0.001 & *** \\
+    {}F1 Female Generation X: log(duration)        &  0.025770  & 0.041234 &  0.625 &     0.532 &     \\
+    {}F1 Female Millennial: log(duration)  & -0.005384  & 0.036740 & -0.147 &     0.883 &     \\
+    {}F1 Female Silent: log(duration)      & -0.202078  & 0.045665 & -4.425 & $<$ 0.001 & *** \\
+    {}F1 Male Baby Boomer: log(duration)      & -0.126601  & 0.038172 & -3.317 & $<$ 0.001 & *** \\
+    {}F1 Male Generation X: log(duration)        &  0.018674  & 0.038123 &  0.490 &     0.624 &     \\
+    {}F1 Male Millennial: log(duration)  &  0.185064  & 0.046839 &  3.951 & $<$ 0.001 & *** \\
+    {}F1 Male Silent: log(duration)      & -0.168352  & 0.043236 & -3.894 & $<$ 0.001 & *** \\
+    {}F2 Female Baby Boomer: log(duration)      & -0.364074  & 0.036666 & -9.930 & $<$ 0.001 & *** \\
+    {}F2 Female Generation X: log(duration)        & -0.278893  & 0.042174 & -6.613 & $<$ 0.001 & *** \\
+    {}F2 Female Millennial: log(duration)  & -0.340912  & 0.037606 & -9.065 & $<$ 0.001 & *** \\
+    {}F2 Female Silent: log(duration)      & -0.285082  & 0.046473 & -6.134 & $<$ 0.001 & *** \\
+    {}F2 Male Baby Boomer: log(duration)      & -0.171553  & 0.039557 & -4.337 & $<$ 0.001 & *** \\
+    {}F2 Male Generation X: log(duration)        & -0.348724  & 0.039089 & -8.921 & $<$ 0.001 & *** \\
+    {}F2 Male Millennial: log(duration)  & -0.112023  & 0.047376 & -2.365 &     0.018 & *   \\
+    {}F2 Male Silent: log(duration)      & -0.245170  & 0.044182 & -5.549 & $<$ 0.001 & *** \\
+    \\
+    \multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+     & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+    {}{}F1 Female Baby Boomer        &    2.996 &    3.000 & 1014.98 &  $<$ 0.001 & *** \\
+    {}{}F1 Female Generation X          &    2.994 &    3.000 &  666.11 &  $<$ 0.001 & *** \\
+    {}{}F1 Female Millennial    &    2.995 &    3.000 &  903.25 &  $<$ 0.001 & *** \\
+    {}{}F1 Female Silent        &    2.993 &    3.000 &  476.04 &  $<$ 0.001 & *** \\
+    {}{}F1 Male Baby Boomer        &    2.995 &    3.000 &  747.38 &  $<$ 0.001 & *** \\
+    {}{}F1 Male Generation X          &    2.991 &    3.000 &  446.25 &  $<$ 0.001 & *** \\
+    {}{}F1 Male Millennial    &    2.991 &    3.000 &  533.52 &  $<$ 0.001 & *** \\
+    {}{}F1 Male Silent        &    2.993 &    3.000 &  638.73 &  $<$ 0.001 & *** \\
+    {}{}F2 Female Baby Boomer        &    2.989 &    3.000 &  236.56 &  $<$ 0.001 & *** \\
+    {}{}F2 Female Generation X          &    2.985 &    3.000 &   86.70 &  $<$ 0.001 & *** \\
+    {}{}F2 Female Millennial    &    2.960 &    2.999 &  108.25 &  $<$ 0.001 & *** \\
+    {}{}F2 Female Silent        &    2.964 &    2.999 &  240.99 &  $<$ 0.001 & *** \\
+    {}{}F2 Male Baby Boomer        &    2.987 &    3.000 &  101.23 &  $<$ 0.001 & *** \\
+    {}{}F2 Male Generation X          &    2.955 &    2.999 &   35.95 &  $<$ 0.001 & *** \\
+    {}{}F2 Male Millennial    &    2.890 &    2.991 &   10.79 &  $<$ 0.001 & *** \\
+    {}{}F2 Male Silent        &    2.976 &    3.000 &   55.69 &  $<$ 0.001 & *** \\
+    s(formant,word)                                     & 1035.022 & 1412.000 &   22.97 &  $<$ 0.001 & *** \\
+    s(formant,speaker)                                  &   90.464 &   92.000 &  280.32 &  $<$ 0.001 & *** \\
+    \\
+    \multicolumn{1}{l}{Adjusted R\textsu{2} =  0.942} &
+    \multicolumn{4}{l}{Deviance explained = 94.3\%}\\
+    \multicolumn{1}{l}{fREML =  78,185} &
+    \multicolumn{3}{l}{Scale est. = 0.31517} &
+    \multicolumn{2}{l}{n = 119,912}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \bat tokens.}
+    \label{tab:summary_statistics_bat}
+\end{table}
+
+
+
+
+
+
+
+% BAN ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                     &  6.2596607 & 0.1512489 &  41.39 &  $<$ 0.001 & *** \\
+{}F1 Female Generation X                 &  0.4591509 & 0.2522644 &   1.82 &      0.069 & .   \\
+{}F1 Female Millennial           & -0.4331307 & 0.2133040 &  -2.03 &      0.042 & *   \\
+{}F1 Female Silent               & -0.0333086 & 0.2715106 &  -0.12 &      0.902 &     \\
+{}F1 Male Baby Boomer               & -0.2061858 & 0.2256004 &  -0.91 &      0.361 &     \\
+{}F1 Male Generation X                 & -0.3723586 & 0.2452650 &  -1.52 &      0.129 &     \\
+{}F1 Male Millennial           & -0.1821747 & 0.2714636 &  -0.67 &      0.502 &     \\
+{}F1 Male Silent               & -0.5932466 & 0.2385216 &  -2.49 &      0.013 & *   \\
+{}F2 Female Baby Boomer               &  6.0606866 & 0.2138983 &  28.33 &  $<$ 0.001 & *** \\
+{}F2 Female Generation X                 &  6.2847749 & 0.2554566 &  24.60 &  $<$ 0.001 & *** \\
+{}F2 Female Millennial           &  6.2154607 & 0.2169539 &  28.65 &  $<$ 0.001 & *** \\
+{}F2 Female Silent               &  6.2359569 & 0.2739727 &  22.76 &  $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer               &  6.4732911 & 0.2292533 &  28.24 &  $<$ 0.001 & *** \\
+{}F2 Male Generation X                 &  6.6199613 & 0.2491230 &  26.57 &  $<$ 0.001 & *** \\
+{}F2 Male Millennial           &  6.4904904 & 0.2742132 &  23.67 &  $<$ 0.001 & *** \\
+{}F2 Male Silent               &  6.7708798 & 0.2418881 &  27.99 &  $<$ 0.001 & *** \\
+log(duration)                                        &  0.0982324 & 0.0419855 &   2.34 &      0.019 & *   \\
+{}F1 Female Generation X: log(duration)        &  0.1093701 & 0.0719773 &   1.52 &      0.129 &     \\
+{}F1 Female Millennial: log(duration)  & -0.0344696 & 0.0564032 &  -0.61 &      0.541 &     \\
+{}F1 Female Silent: log(duration)      &  0.0000988 & 0.0715175 &   0.00 &      0.999 &     \\
+{}F1 Male Baby Boomer: log(duration)      & -0.0678975 & 0.0626400 &  -1.08 &      0.278 &     \\
+{}F1 Male Generation X: log(duration)        & -0.0734144 & 0.0662708 &  -1.11 &      0.268 &     \\
+{}F1 Male Millennial: log(duration)  &  0.1581249 & 0.0714473 &   2.21 &      0.027 & *   \\
+{}F1 Male Silent: log(duration)      & -0.2652781 & 0.0696209 &  -3.81 &  $<$ 0.001 & *** \\
+{}F2 Female Baby Boomer: log(duration)      & -0.0667539 & 0.0593765 &  -1.12 &      0.261 &     \\
+{}F2 Female Generation X: log(duration)        &  0.0207342 & 0.0729519 &   0.28 &      0.776 &     \\
+{}F2 Female Millennial: log(duration)  & -0.0712344 & 0.0574904 &  -1.24 &      0.215 &     \\
+{}F2 Female Silent: log(duration)      &  0.0249353 & 0.0721561 &   0.35 &      0.730 &     \\
+{}F2 Male Baby Boomer: log(duration)      &  0.0289548 & 0.0641654 &   0.45 &      0.652 &     \\
+{}F2 Male Generation X: log(duration)        &  0.1166504 & 0.0676503 &   1.72 &      0.085 & .   \\
+{}F2 Male Millennial: log(duration)  & -0.0123659 & 0.0719123 &  -0.17 &      0.863 &     \\
+{}F2 Male Silent: log(duration)      &  0.1426395 & 0.0707494 &   2.02 &      0.044 & *   \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer      & 2.96 &   3.00 & 122.6 & $<$ 0.001 & *** \\
+{}{}F1 Female Generation X        & 2.97 &   3.00 & 206.0 & $<$ 0.001 & *** \\
+{}{}F1 Female Millennial  & 2.94 &   3.00 &  77.1 & $<$ 0.001 & *** \\
+{}{}F1 Female Silent      & 2.86 &   2.99 &  43.8 & $<$ 0.001 & *** \\
+{}{}F1 Male Baby Boomer      & 2.93 &   3.00 &  74.6 & $<$ 0.001 & *** \\
+{}{}F1 Male Generation X        & 2.88 &   2.99 &  33.3 & $<$ 0.001 & *** \\
+{}{}F1 Male Millennial  & 2.93 &   3.00 &  46.9 & $<$ 0.001 & *** \\
+{}{}F1 Male Silent      & 2.96 &   3.00 & 103.4 & $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer      & 2.98 &   3.00 & 631.7 & $<$ 0.001 & *** \\
+{}{}F2 Female Generation X        & 2.98 &   3.00 & 543.7 & $<$ 0.001 & *** \\
+{}{}F2 Female Millennial  & 2.97 &   3.00 & 290.9 & $<$ 0.001 & *** \\
+{}{}F2 Female Silent      & 2.94 &   3.00 & 198.3 & $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer      & 2.98 &   3.00 & 426.1 & $<$ 0.001 & *** \\
+{}{}F2 Male Generation X        & 2.94 &   3.00 & 152.3 & $<$ 0.001 & *** \\
+{}{}F2 Male Millennial  & 2.96 &   3.00 & 191.1 & $<$ 0.001 & *** \\
+{}{}F2 Male Silent      & 2.96 &   3.00 & 186.8 & $<$ 0.001 & *** \\
+s(formant,word)                                 & 568.97 & 804.00 &  30.3 & $<$ 0.001 & *** \\
+s(formant,speaker)                             &   89.56 &  92.00 & 201.1 & $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} =  0.961} &
+\multicolumn{4}{l}{Deviance explained = 96.1\%}\\
+\multicolumn{1}{l}{fREML =  35,223} &
+\multicolumn{3}{l}{Scale est. = 0.3506} &
+\multicolumn{2}{l}{n = 54,098}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \ban tokens.}
+    \label{tab:summary_statistics_ban}
+\end{table}
+
+
+
+
+
+% BANG ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                     &  5.24188  &  0.47014 &  11.15 &  $<$ 0.001 & *** \\
+{}F1 Female Generation X                 &  0.89429  &  0.66355 &   1.35 &      0.178 &     \\
+{}F1 Female Millennial           &  0.49491  &  0.62213 &   0.80 &      0.426 &     \\
+{}F1 Female Silent               &  0.17500  &  0.69771 &   0.25 &      0.802 &     \\
+{}F1 Male Baby Boomer               &  0.91251  &  0.78280 &   1.17 &      0.244 &     \\
+{}F1 Male Generation X                 &  1.07883  &  0.61529 &   1.75 &      0.080 & .   \\
+{}F1 Male Millennial           & -0.14179  &  0.76028 &  -0.19 &      0.852 &     \\
+{}F1 Male Silent               &  0.15485  &  0.62777 &   0.25 &      0.805 &     \\
+{}F2 Female Baby Boomer               &  8.36858  &  0.66485 &  12.59 &  $<$ 0.001 & *** \\
+{}F2 Female Generation X                 &  8.82852  &  0.67746 &  13.03 &  $<$ 0.001 & *** \\
+{}F2 Female Millennial           &  7.88149  &  0.62785 &  12.55 &  $<$ 0.001 & *** \\
+{}F2 Female Silent               &  6.76061  &  0.70738 &   9.56 &  $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer               &  6.66057  &  0.79838 &   8.34 &  $<$ 0.001 & *** \\
+{}F2 Male Generation X                 &  7.65513  &  0.62852 &  12.18 &  $<$ 0.001 & *** \\
+{}F2 Male Millennial           &  7.48394  &  0.76641 &   9.76 &  $<$ 0.001 & *** \\
+{}F2 Male Silent               &  7.87977  &  0.64847 &  12.15 &  $<$ 0.001 & *** \\
+log(duration)                                        & -0.14365  &  0.14850 &  -0.97 &      0.333 &     \\
+{}F1 Female Generation X: log(duration)        &  0.28562  &  0.22330 &   1.28 &      0.201 &     \\
+{}F1 Female Millennial: log(duration)  &  0.29387  &  0.19630 &   1.50 &      0.134 &     \\
+{}F1 Female Silent: log(duration)      &  0.04299  &  0.23062 &   0.19 &      0.852 &     \\
+{}F1 Male Baby Boomer: log(duration)      &  0.25768  &  0.27704 &   0.93 &      0.352 &     \\
+{}F1 Male Generation X: log(duration)        &  0.41051  &  0.19686 &   2.09 &      0.037 & *   \\
+{}F1 Male Millennial: log(duration)  &  0.06234  &  0.25453 &   0.24 &      0.807 &     \\
+{}F1 Male Silent: log(duration)      & -0.00767  &  0.21528 &  -0.04 &      0.972 &     \\
+{}F2 Female Baby Boomer: log(duration)      &  0.41525  &  0.20998 &   1.98 &      0.048 & *   \\
+{}F2 Female Generation X: log(duration)        &  0.63043  &  0.22401 &   2.81 &      0.005 & **  \\
+{}F2 Female Millennial: log(duration)  &  0.43601  &  0.19434 &   2.24 &      0.025 & *   \\
+{}F2 Female Silent: log(duration)      & -0.09860  &  0.22975 &  -0.43 &      0.668 &     \\
+{}F2 Male Baby Boomer: log(duration)      & -0.19319  &  0.27930 &  -0.69 &      0.489 &     \\
+{}F2 Male Generation X: log(duration)        &  0.18526  &  0.19727 &   0.94 &      0.348 &     \\
+{}F2 Male Millennial: log(duration)  &  0.15437  &  0.25332 &   0.61 &      0.542 &     \\
+{}F2 Male Silent: log(duration)      &  0.37993  &  0.21757 &   1.75 &      0.081 & .   \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer      &  2.26 &   2.66 &   7.54 &        $<$ 0.001 & *** \\
+{}{}F1 Female Generation X        &  1.58 &   1.94 &   4.66 &            0.007 & **  \\
+{}{}F1 Female Millennial  &  1.00 &   1.00 &   0.45 &            0.503 &     \\
+{}{}F1 Female Silent      &  2.19 &   2.60 &   1.72 &            0.126 &     \\
+{}{}F1 Male Baby Boomer      &  2.54 &   2.86 &   8.68 &        $<$ 0.001 & *** \\
+{}{}F1 Male Generation X        &  2.42 &   2.78 &  19.28 &        $<$ 0.001 & *** \\
+{}{}F1 Male Millennial  &  2.34 &   2.72 &   5.09 &            0.003 & **  \\
+{}{}F1 Male Silent      &  2.63 &   2.90 &  19.77 &        $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer      &  1.43 &   1.73 &  46.56 &        $<$ 0.001 & *** \\
+{}{}F2 Female Generation X        &  1.90 &   2.32 &  36.55 &        $<$ 0.001 & *** \\
+{}{}F2 Female Millennial  &  2.07 &   2.49 &  12.55 &        $<$ 0.001 & *** \\
+{}{}F2 Female Silent      &  1.00 &   1.00 &  47.89 &        $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer      &  1.00 &   1.00 & 113.60 &        $<$ 0.001 & *** \\
+{}{}F2 Male Generation X        &  1.30 &   1.54 &  82.95 &        $<$ 0.001 & *** \\
+{}{}F2 Male Millennial  &  1.00 &   1.00 &  31.71 &        $<$ 0.001 & *** \\
+{}{}F2 Male Silent      &  1.52 &   1.86 & 161.92 &        $<$ 0.001 & *** \\
+s(formant,word)                                 &   95.46 & 112.00 &  38.47 &        $<$ 0.001 & *** \\
+s(formant,speaker)                             &    65.17 & 102.00 &  20.76 &        $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} =  0.974} &&
+\multicolumn{4}{l}{Deviance explained = 97.5\%}\\
+\multicolumn{1}{l}{fREML =  3293.3} &
+\multicolumn{3}{l}{Scale est. = 0.27666} &
+\multicolumn{2}{l}{n = 5,770}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \bang tokens.}
+    \label{tab:summary_statistics_bang}
+\end{table}
+
+
+
+
+% BET ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                     &  6.55482  &  0.08345 &  78.55 &        $<$ 0.001 & *** \\
+{}F1 Female Generation X                 & -0.05527  &  0.13428 &  -0.41 &            0.681 &     \\
+{}F1 Female Millennial           & -0.11440  &  0.11930 &  -0.96 &            0.338 &     \\
+{}F1 Female Silent               & -0.21411  &  0.14595 &  -1.47 &            0.142 &     \\
+{}F1 Male Baby Boomer               & -0.37967  &  0.12279 &  -3.09 &            0.002 & **  \\
+{}F1 Male Generation X                 & -0.31302  &  0.13624 &  -2.30 &            0.022 & *   \\
+{}F1 Male Millennial           & -0.54267  &  0.15069 &  -3.60 &        $<$ 0.001 & *** \\
+{}F1 Male Silent               & -0.56516  &  0.12813 &  -4.41 &        $<$ 0.001 & *** \\
+{}F2 Female Baby Boomer               &  5.24924  &  0.11801 &  44.48 &        $<$ 0.001 & *** \\
+{}F2 Female Generation X                 &  5.45282  &  0.13782 &  39.56 &        $<$ 0.001 & *** \\
+{}F2 Female Millennial           &  5.24320  &  0.12336 &  42.50 &        $<$ 0.001 & *** \\
+{}F2 Female Silent               &  5.28649  &  0.14930 &  35.41 &        $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer               &  5.54320  &  0.12642 &  43.85 &        $<$ 0.001 & *** \\
+{}F2 Male Generation X                 &  5.80098  &  0.13924 &  41.66 &        $<$ 0.001 & *** \\
+{}F2 Male Millennial           &  5.74981  &  0.15381 &  37.38 &        $<$ 0.001 & *** \\
+{}F2 Male Silent               &  6.00112  &  0.13150 &  45.63 &        $<$ 0.001 & *** \\
+log(duration)                                        &  0.30657  &  0.01775 &  17.27 &        $<$ 0.001 & *** \\
+{}F1 Female Generation X: log(duration)        & -0.05065  &  0.02874 &  -1.76 &            0.078 & .   \\
+{}F1 Female Millennial: log(duration)  & -0.06636  &  0.02690 &  -2.47 &            0.014 & *   \\
+{}F1 Female Silent: log(duration)      & -0.00638  &  0.02839 &  -0.22 &            0.822 &     \\
+{}F1 Male Baby Boomer: log(duration)      & -0.08627  &  0.02638 &  -3.27 &            0.001 & **  \\
+{}F1 Male Generation X: log(duration)        & -0.06462  &  0.03041 &  -2.13 &            0.034 & *   \\
+{}F1 Male Millennial: log(duration)  & -0.15045  &  0.03102 &  -4.85 &        $<$ 0.001 & *** \\
+{}F1 Male Silent: log(duration)      & -0.12357  &  0.02816 &  -4.39 &        $<$ 0.001 & *** \\
+{}F2 Female Baby Boomer: log(duration)      & -0.27680  &  0.02511 & -11.02 &        $<$ 0.001 & *** \\
+{}F2 Female Generation X: log(duration)        & -0.12362  &  0.02979 &  -4.15 &        $<$ 0.001 & *** \\
+{}F2 Female Millennial: log(duration)  & -0.18298  &  0.02797 &  -6.54 &        $<$ 0.001 & *** \\
+{}F2 Female Silent: log(duration)      & -0.34271  &  0.02954 & -11.60 &        $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer: log(duration)      & -0.18104  &  0.02735 &  -6.62 &        $<$ 0.001 & *** \\
+{}F2 Male Generation X: log(duration)        & -0.08204  &  0.03103 &  -2.64 &            0.008 & **  \\
+{}F2 Male Millennial: log(duration)  & -0.09692  &  0.03197 &  -3.03 &            0.002 & **  \\
+{}F2 Male Silent: log(duration)      & -0.05599  &  0.02902 &  -1.93 &            0.054 & .   \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer        &  3.00  &   3.00 & 891.0 &       $<$ 0.001 & *** \\
+{}{}F1 Female Generation X          &  2.99  &   3.00 & 452.4 &       $<$ 0.001 & *** \\
+{}{}F1 Female Millennial    &  2.99  &   3.00 & 850.2 &       $<$ 0.001 & *** \\
+{}{}F1 Female Silent        &  2.99  &   3.00 & 454.5 &       $<$ 0.001 & *** \\
+{}{}F1 Male Baby Boomer        &  2.99  &   3.00 & 462.9 &       $<$ 0.001 & *** \\
+{}{}F1 Male Generation X          &  2.99  &   3.00 & 319.7 &       $<$ 0.001 & *** \\
+{}{}F1 Male Millennial    &  2.98  &   3.00 & 212.8 &       $<$ 0.001 & *** \\
+{}{}F1 Male Silent        &  2.99  &   3.00 & 440.7 &       $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer        &  2.95  &   3.00 & 364.7 &       $<$ 0.001 & *** \\
+{}{}F2 Female Generation X          &  2.74  &   2.95 &  50.4 &       $<$ 0.001 & *** \\
+{}{}F2 Female Millennial    &  2.90  &   2.99 &  14.5 &       $<$ 0.001 & *** \\
+{}{}F2 Female Silent        &  2.81  &   2.97 & 198.3 &       $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer        &  2.95  &   3.00 & 222.7 &       $<$ 0.001 & *** \\
+{}{}F2 Male Generation X          &  2.70  &   2.94 &  39.9 &       $<$ 0.001 & *** \\
+{}{}F2 Male Millennial    &  2.75  &   2.96 &  16.2 &       $<$ 0.001 & *** \\
+{}{}F2 Male Silent        &  2.95  &   3.00 & 183.9 &       $<$ 0.001 & *** \\
+s(formant,word)                                 &   1196.89 & 1542.00 &  26.5 &       $<$ 0.001 & *** \\
+s(formant,speaker)                               &    90.15 &   93.00 & 225.5 &       $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} =  0.963} &
+\multicolumn{4}{l}{Deviance explained = 96.4\%}\\
+\multicolumn{1}{l}{fREML =  82,874} &
+\multicolumn{3}{l}{Scale est. = 0.27904} &
+\multicolumn{2}{l}{n = 168,688}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \bet tokens.}
+    \label{tab:summary_statistics_bet}
+\end{table}
+
+
+
+
+
+% BEN ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                     &  6.08013 &   0.10938 &  55.59 &          $<$ 0.001 & *** \\
+{}F1 Female Generation X                 &  0.56414 &   0.17702 &   3.19 &              0.001 & **  \\
+{}F1 Female Millennial           &  0.00411 &   0.16009 &   0.03 &              0.980 &     \\
+{}F1 Female Silent               & -0.40901 &   0.18779 &  -2.18 &              0.029 & *   \\
+{}F1 Male Baby Boomer               & -0.61384 &   0.16816 &  -3.65 &          $<$ 0.001 & *** \\
+{}F1 Male Generation X                 & -0.10171 &   0.17708 &  -0.57 &              0.566 &     \\
+{}F1 Male Millennial           & -0.01361 &   0.20760 &  -0.07 &              0.948 &     \\
+{}F1 Male Silent               & -0.53746 &   0.16456 &  -3.27 &              0.001 & **  \\
+{}F2 Female Baby Boomer               &  7.05675 &   0.15468 &  45.62 &          $<$ 0.001 & *** \\
+{}F2 Female Generation X                 &  6.86853 &   0.18210 &  37.72 &          $<$ 0.001 & *** \\
+{}F2 Female Millennial           &  6.53285 &   0.16538 &  39.50 &          $<$ 0.001 & *** \\
+{}F2 Female Silent               &  7.30834 &   0.19291 &  37.88 &          $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer               &  7.17698 &   0.17269 &  41.56 &          $<$ 0.001 & *** \\
+{}F2 Male Generation X                 &  6.75554 &   0.18162 &  37.20 &          $<$ 0.001 & *** \\
+{}F2 Male Millennial           &  7.20571 &   0.21114 &  34.13 &          $<$ 0.001 & *** \\
+{}F2 Male Silent               &  7.30650 &   0.16924 &  43.17 &          $<$ 0.001 & *** \\
+log(duration)                                        &  0.18610 &   0.02598 &   7.16 &          $<$ 0.001 & *** \\
+{}F1 Female Generation X: log(duration)        &  0.15077 &   0.04266 &   3.53 &          $<$ 0.001 & *** \\
+{}F1 Female Millennial: log(duration)  & -0.05985 &   0.04002 &  -1.50 &              0.135 &     \\
+{}F1 Female Silent: log(duration)      & -0.06279 &   0.04228 &  -1.49 &              0.136 &     \\
+{}F1 Male Baby Boomer: log(duration)      & -0.18851 &   0.04130 &  -4.56 &          $<$ 0.001 & *** \\
+{}F1 Male Generation X: log(duration)        &  0.05067 &   0.04266 &   1.19 &              0.235 &     \\
+{}F1 Male Millennial: log(duration)  &  0.04831 &   0.05080 &   0.95 &              0.342 &     \\
+{}F1 Male Silent: log(duration)      & -0.18088 &   0.03897 &  -4.64 &          $<$ 0.001 & *** \\
+{}F2 Female Baby Boomer: log(duration)      &  0.16973 &   0.03674 &   4.62 &          $<$ 0.001 & *** \\
+{}F2 Female Generation X: log(duration)        &  0.19163 &   0.04356 &   4.40 &          $<$ 0.001 & *** \\
+{}F2 Female Millennial: log(duration)  &  0.13953 &   0.04087 &   3.41 &          $<$ 0.001 & *** \\
+{}F2 Female Silent: log(duration)      &  0.13483 &   0.04337 &   3.11 &              0.002 & **  \\
+{}F2 Male Baby Boomer: log(duration)      &  0.21187 &   0.04214 &   5.03 &          $<$ 0.001 & *** \\
+{}F2 Male Generation X: log(duration)        &  0.09269 &   0.04341 &   2.14 &              0.033 & *   \\
+{}F2 Male Millennial: log(duration)  &  0.24576 &   0.05124 &   4.80 &          $<$ 0.001 & *** \\
+{}F2 Male Silent: log(duration)      &  0.26269 &   0.03982 &   6.60 &          $<$ 0.001 & *** \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer      &   2.98 &   3.00 & 222.2 & $<$ 0.001 & *** \\
+{}{}F1 Female Generation X        &   2.98 &   3.00 & 179.6 & $<$ 0.001 & *** \\
+{}{}F1 Female Millennial  &   2.97 &   3.00 & 160.1 & $<$ 0.001 & *** \\
+{}{}F1 Female Silent      &   2.97 &   3.00 & 186.3 & $<$ 0.001 & *** \\
+{}{}F1 Male Baby Boomer      &   2.97 &   3.00 & 123.2 & $<$ 0.001 & *** \\
+{}{}F1 Male Generation X        &   2.96 &   3.00 &  88.5 & $<$ 0.001 & *** \\
+{}{}F1 Male Millennial  &   2.93 &   3.00 &  54.3 & $<$ 0.001 & *** \\
+{}{}F1 Male Silent      &   2.98 &   3.00 & 188.9 & $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer      &   2.98 &   3.00 & 243.4 & $<$ 0.001 & *** \\
+{}{}F2 Female Generation X        &   2.95 &   3.00 &  86.5 & $<$ 0.001 & *** \\
+{}{}F2 Female Millennial  &   2.93 &   3.00 &  98.1 & $<$ 0.001 & *** \\
+{}{}F2 Female Silent      &   2.98 &   3.00 & 386.2 & $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer      &   2.95 &   3.00 & 136.8 & $<$ 0.001 & *** \\
+{}{}F2 Male Generation X        &   2.87 &   2.99 &  48.1 & $<$ 0.001 & *** \\
+{}{}F2 Male Millennial  &   2.86 &   2.99 &  39.0 & $<$ 0.001 & *** \\
+{}{}F2 Male Silent      &   2.97 &   3.00 & 169.4 & $<$ 0.001 & *** \\
+s(formant,word)                                 &   571.17 & 750.00 &  48.5 & $<$ 0.001 & *** \\
+s(formant,speaker)                              &    89.31 &  92.00 & 125.2 & $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} =  0.96} &
+\multicolumn{4}{l}{Deviance explained = 96\%}\\
+\multicolumn{1}{l}{fREML =  40,043} &
+\multicolumn{3}{l}{Scale est. = 0.28072} &
+\multicolumn{2}{l}{n = 91,952}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \ben tokens.}
+    \label{tab:summary_statistics_ben}
+\end{table}
+
+
+
+% BIT ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                     &  5.24200 &   0.09028 &  58.07 &      $<$ 0.001 & *** \\
+{}F1 Female Generation X                 & -0.00808 &   0.14047 &  -0.06 &          0.954 &     \\
+{}F1 Female Millennial           &  0.05502 &   0.13062 &   0.42 &          0.674 &     \\
+{}F1 Female Silent               & -0.19920 &   0.16125 &  -1.24 &          0.217 &     \\
+{}F1 Male Baby Boomer               & -0.15907 &   0.13254 &  -1.20 &          0.230 &     \\
+{}F1 Male Generation X                 &  0.01543 &   0.14421 &   0.11 &          0.915 &     \\
+{}F1 Male Millennial           & -0.12328 &   0.16127 &  -0.76 &          0.445 &     \\
+{}F1 Male Silent               & -0.31984 &   0.14043 &  -2.28 &          0.023 & *   \\
+{}F2 Female Baby Boomer               &  7.27626 &   0.12767 &  56.99 &      $<$ 0.001 & *** \\
+{}F2 Female Generation X                 &  7.57181 &   0.14561 &  52.00 &      $<$ 0.001 & *** \\
+{}F2 Female Millennial           &  6.84184 &   0.13541 &  50.53 &      $<$ 0.001 & *** \\
+{}F2 Female Silent               &  7.22949 &   0.16523 &  43.75 &      $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer               &  7.45481 &   0.13780 &  54.10 &      $<$ 0.001 & *** \\
+{}F2 Male Generation X                 &  7.46994 &   0.14886 &  50.18 &      $<$ 0.001 & *** \\
+{}F2 Male Millennial           &  7.43483 &   0.16515 &  45.02 &      $<$ 0.001 & *** \\
+{}F2 Male Silent               &  8.05268 &   0.14501 &  55.53 &      $<$ 0.001 & *** \\
+log(duration)                                        &  0.24358 &   0.01892 &  12.87 &      $<$ 0.001 & *** \\
+{}F1 Female Generation X: log(duration)        & -0.02815 &   0.02844 &  -0.99 &          0.322 &     \\
+{}F1 Female Millennial: log(duration)  & -0.02533 &   0.02912 &  -0.87 &          0.384 &     \\
+{}F1 Female Silent: log(duration)      & -0.07222 &   0.03409 &  -2.12 &          0.034 & *   \\
+{}F1 Male Baby Boomer: log(duration)      & -0.07023 &   0.02847 &  -2.47 &          0.014 & *   \\
+{}F1 Male Generation X: log(duration)        & -0.00925 &   0.03115 &  -0.30 &          0.767 &     \\
+{}F1 Male Millennial: log(duration)  & -0.04915 &   0.03253 &  -1.51 &          0.131 &     \\
+{}F1 Male Silent: log(duration)      & -0.11517 &   0.03208 &  -3.59 &      $<$ 0.001 & *** \\
+{}F2 Female Baby Boomer: log(duration)      & -0.08485 &   0.02676 &  -3.17 &          0.002 & **  \\
+{}F2 Female Generation X: log(duration)        &  0.04470 &   0.02984 &   1.50 &          0.134 &     \\
+{}F2 Female Millennial: log(duration)  & -0.14364 &   0.03029 &  -4.74 &      $<$ 0.001 & *** \\
+{}F2 Female Silent: log(duration)      & -0.20470 &   0.03511 &  -5.83 &      $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer: log(duration)      & -0.03148 &   0.02997 &  -1.05 &          0.294 &     \\
+{}F2 Male Generation X: log(duration)        & -0.03829 &   0.03240 &  -1.18 &          0.237 &     \\
+{}F2 Male Millennial: log(duration)  & -0.03807 &   0.03358 &  -1.13 &          0.257 &     \\
+{}F2 Male Silent: log(duration)      &  0.11239 &   0.03322 &   3.38 &       $<$ 0.001 & *** \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer        &  2.99 &    3.00 & 489.2 & $<$ 0.001 & *** \\
+{}{}F1 Female Generation X          &  2.99 &    3.00 & 284.7 & $<$ 0.001 & *** \\
+{}{}F1 Female Millennial    &  2.98 &    3.00 & 206.9 & $<$ 0.001 & *** \\
+{}{}F1 Female Silent        &  2.99 &    3.00 & 268.5 & $<$ 0.001 & *** \\
+{}{}F1 Male Baby Boomer        &  2.99 &    3.00 & 310.0 & $<$ 0.001 & *** \\
+{}{}F1 Male Generation X          &  2.97 &    3.00 & 161.2 & $<$ 0.001 & *** \\
+{}{}F1 Male Millennial    &  2.96 &    3.00 &  91.9 & $<$ 0.001 & *** \\
+{}{}F1 Male Silent        &  2.99 &    3.00 & 376.2 & $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer        &  2.97 &    3.00 & 155.8 & $<$ 0.001 & *** \\
+{}{}F2 Female Generation X          &  2.93 &    3.00 &  54.2 & $<$ 0.001 & *** \\
+{}{}F2 Female Millennial    &  2.42 &    2.78 &  27.8 & $<$ 0.001 & *** \\
+{}{}F2 Female Silent        &  2.94 &    3.00 &  70.5 & $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer        &  2.94 &    3.00 &  46.0 & $<$ 0.001 & *** \\
+{}{}F2 Male Generation X          &  2.88 &    2.99 &  51.9 & $<$ 0.001 & *** \\
+{}{}F2 Male Millennial    &  2.88 &    2.99 &  17.2 & $<$ 0.001 & *** \\
+{}{}F2 Male Silent        &  2.95 &    3.00 &  85.0 & $<$ 0.001 & *** \\
+s(formant,word)                                &    1218.48 & 1472.00 &  82.1 & $<$ 0.001 & *** \\
+s(formant,speaker)                             &      90.39 &   92.00 & 389.3 & $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} =  0.974} &
+\multicolumn{4}{l}{Deviance explained = 97.5\%}\\
+\multicolumn{1}{l}{fREML =  78,243} &
+\multicolumn{3}{l}{Scale est. = 0.26789} &
+\multicolumn{2}{l}{n = 175,610}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \bit tokens.}
+    \label{tab:summary_statistics_bit}
+\end{table}
+
+
+
+
+% BIN ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                      &  5.7243 &    0.1768 &   32.39 &     $<$ 0.001 & *** \\
+{}F1 Female Generation X                  & -0.1930 &    0.2744 &   -0.70 &         0.482 &     \\
+{}F1 Female Millennial            & -0.4140 &    0.2592 &   -1.60 &         0.110 &     \\
+{}F1 Female Silent                & -0.0842 &    0.3118 &   -0.27 &         0.787 &     \\
+{}F1 Male Baby Boomer                & -0.4375 &    0.2499 &   -1.75 &         0.080 & .   \\
+{}F1 Male Generation X                  & -0.7898 &    0.2557 &   -3.09 &         0.002 & **  \\
+{}F1 Male Millennial            & -0.8969 &    0.2900 &   -3.09 &         0.002 & **  \\
+{}F1 Male Silent                & -0.6252 &    0.2684 &   -2.33 &         0.020 & *   \\
+{}F2 Female Baby Boomer                &  7.6763 &    0.2500 &   30.71 &     $<$ 0.001 & *** \\
+{}F2 Female Generation X                  &  7.5925 &    0.2839 &   26.74 &     $<$ 0.001 & *** \\
+{}F2 Female Millennial            &  7.4618 &    0.2663 &   28.02 &     $<$ 0.001 & *** \\
+{}F2 Female Silent                &  7.0062 &    0.3193 &   21.95 &     $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer                &  8.1486 &    0.2578 &   31.61 &     $<$ 0.001 & *** \\
+{}F2 Male Generation X                  &  7.5956 &    0.2621 &   28.98 &     $<$ 0.001 & *** \\
+{}F2 Male Millennial            &  7.7934 &    0.2951 &   26.41 &     $<$ 0.001 & *** \\
+{}F2 Male Silent                &  7.4239 &    0.2764 &   26.85 &     $<$ 0.001 & *** \\
+log(duration)                                         &  0.3040 &    0.0533 &    5.70 &     $<$ 0.001 & *** \\
+{}F1 Female Generation X: log(duration)         & -0.0715 &    0.0828 &   -0.86 &         0.388 &     \\
+{}F1 Female Millennial: log(duration)   & -0.1934 &    0.0789 &   -2.45 &         0.014 & *   \\
+{}F1 Female Silent: log(duration)       & -0.0718 &    0.1013 &   -0.71 &         0.479 &     \\
+{}F1 Male Baby Boomer: log(duration)       & -0.1422 &    0.0752 &   -1.89 &         0.059 & .   \\
+{}F1 Male Generation X: log(duration)         & -0.2671 &    0.0760 &   -3.51 &     $<$ 0.001 & *** \\
+{}F1 Male Millennial: log(duration)   & -0.2474 &    0.0839 &   -2.95 &         0.003 & **  \\
+{}F1 Male Silent: log(duration)       & -0.2140 &    0.0847 &   -2.53 &         0.012 & *   \\
+{}F2 Female Baby Boomer: log(duration)       &  0.1574 &    0.0754 &    2.09 &         0.037 & *   \\
+{}F2 Female Generation X: log(duration)         &  0.1420 &    0.0852 &    1.67 &         0.096 & .   \\
+{}F2 Female Millennial: log(duration)   &  0.1853 &    0.0802 &    2.31 &         0.021 & *   \\
+{}F2 Female Silent: log(duration)       & -0.1551 &    0.1028 &   -1.51 &         0.131 &     \\
+{}F2 Male Baby Boomer: log(duration)       &  0.2761 &    0.0766 &    3.60 &     $<$ 0.001 & *** \\
+{}F2 Male Generation X: log(duration)         &  0.1255 &    0.0767 &    1.64 &         0.102 &     \\
+{}F2 Male Millennial: log(duration)   &  0.1789 &    0.0846 &    2.12 &         0.034 & *   \\
+{}F2 Male Silent: log(duration)       &  0.0314 &    0.0863 &    0.36 &         0.716 &     \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer       &  2.96 &   3.00 &  97.8 &           $<$ 0.001 & *** \\
+{}{}F1 Female Generation X         &  2.90 &   2.99 &  38.6 &           $<$ 0.001 & *** \\
+{}{}F1 Female Millennial   &  2.94 &   3.00 &  61.9 &           $<$ 0.001 & *** \\
+{}{}F1 Female Silent       &  2.96 &   3.00 &  71.9 &           $<$ 0.001 & *** \\
+{}{}F1 Male Baby Boomer       &  2.93 &   3.00 &  60.8 &           $<$ 0.001 & *** \\
+{}{}F1 Male Generation X         &  2.91 &   2.99 &  33.3 &           $<$ 0.001 & *** \\
+{}{}F1 Male Millennial   &  2.88 &   2.99 &  23.2 &           $<$ 0.001 & *** \\
+{}{}F1 Male Silent       &  2.93 &   3.00 &  67.8 &           $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer       &  2.95 &   3.00 & 115.4 &           $<$ 0.001 & *** \\
+{}{}F2 Female Generation X         &  2.92 &   3.00 &  52.2 &           $<$ 0.001 & *** \\
+{}{}F2 Female Millennial   &  2.93 &   3.00 &  66.8 &           $<$ 0.001 & *** \\
+{}{}F2 Female Silent       &  2.94 &   3.00 &  65.7 &           $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer       &  2.94 &   3.00 &  76.8 &           $<$ 0.001 & *** \\
+{}{}F2 Male Generation X          & 2.88 &   2.99 &  32.6 &           $<$ 0.001 & *** \\
+{}{}F2 Male Millennial    & 2.84 &   2.98 &  23.2 &           $<$ 0.001 & *** \\
+{}{}F2 Male Silent        & 2.92 &   3.00 &  50.6 &           $<$ 0.001 & *** \\
+s(formant,word)                                  &  446.74 & 530.00 &  43.4 &           $<$ 0.001 & *** \\
+s(formant,speaker)                               &   84.25 &  95.00 & 108.9 &           $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} = 0.971} &
+\multicolumn{4}{l}{Deviance explained = 97.1\%}\\
+\multicolumn{1}{l}{fREML = 18,799} &
+\multicolumn{3}{l}{Scale est. = 0.31206} &
+\multicolumn{2}{l}{n = 32,722}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \bin tokens.}
+    \label{tab:summary_statistics_bin}
+\end{table}
+
+
+
+
+
+% BING ---------------------------------------------------------------------------------
+\begin{table}[ht]
+    \centering
+    \tiny
+    \setlength\tabcolsep{3pt} % <- the default is 6pt
+    \resizebox{!}{0.45\textheight}{
+        \liningnums{
+            \begin{tabular}{l r r r r@{\hskip1pt} @{\hskip0pt}l}
+\multicolumn{6}{l}{Parametric coefficients:}\\
+\\
+ & \textbf{Estimate} & \textbf{Std. Error} & \textbf{\textit{t}-value} & \multicolumn{2}{c}{\textbf{\textit{p}-value}}\\
+Intercept (F1 Female Baby Boomer)                                     &  5.47634 &   0.16889 &  32.42 &     $<$ 0.001 & *** \\
+{}F1 Female Generation X                 & -0.34324 &   0.24823 &  -1.38 &         0.167 &     \\
+{}F1 Female Millennial           & -0.32484 &   0.22521 &  -1.44 &         0.149 &     \\
+{}F1 Female Silent               & -0.27738 &   0.27037 &  -1.03 &         0.305 &     \\
+{}F1 Male Baby Boomer               & -0.22994 &   0.24582 &  -0.94 &         0.350 &     \\
+{}F1 Male Generation X                 & -0.48005 &   0.25475 &  -1.88 &         0.060 & .   \\
+{}F1 Male Millennial           & -0.49600 &   0.28038 &  -1.77 &         0.077 & .   \\
+{}F1 Male Silent               & -0.06144 &   0.24446 &  -0.25 &         0.802 &     \\
+{}F2 Female Baby Boomer               &  7.73835 &   0.23885 &  32.40 &     $<$ 0.001 & *** \\
+{}F2 Female Generation X                 &  8.24521 &   0.26510 &  31.10 &     $<$ 0.001 & *** \\
+{}F2 Female Millennial           &  6.97837 &   0.24363 &  28.64 &     $<$ 0.001 & *** \\
+{}F2 Female Silent               &  7.51468 &   0.28595 &  26.28 &     $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer               &  7.39884 &   0.26325 &  28.11 &     $<$ 0.001 & *** \\
+{}F2 Male Generation X                 &  7.69452 &   0.27151 &  28.34 &     $<$ 0.001 & *** \\
+{}F2 Male Millennial           &  7.61774 &   0.29495 &  25.83 &     $<$ 0.001 & *** \\
+{}F2 Male Silent               &  7.42576 &   0.26197 &  28.35 &     $<$ 0.001 & *** \\
+log(duration)                                        &  0.31126 &   0.03762 &   8.27 &     $<$ 0.001 & *** \\
+{}F1 Female Generation X: log(duration)        & -0.16447 &   0.05745 &  -2.86 &         0.004 & **  \\
+{}F1 Female Millennial: log(duration)  & -0.13130 &   0.05486 &  -2.39 &         0.017 & *   \\
+{}F1 Female Silent: log(duration)      & -0.15683 &   0.06066 &  -2.59 &         0.010 & **  \\
+{}F1 Male Baby Boomer: log(duration)      & -0.15765 &   0.06340 &  -2.49 &         0.013 & *   \\
+{}F1 Male Generation X: log(duration)        & -0.14996 &   0.06169 &  -2.43 &         0.015 & *   \\
+{}F1 Male Millennial: log(duration)  & -0.12006 &   0.06388 &  -1.88 &         0.060 & .   \\
+{}F1 Male Silent: log(duration)      & -0.06464 &   0.06325 &  -1.02 &         0.307 &     \\
+{}F2 Female Baby Boomer: log(duration)      & -0.20667 &   0.05320 &  -3.88 &     $<$ 0.001 & *** \\
+{}F2 Female Generation X: log(duration)        &  0.00523 &   0.05818 &   0.09 &         0.928 &     \\
+{}F2 Female Millennial: log(duration)  & -0.30277 &   0.05562 &  -5.44 &     $<$ 0.001 & *** \\
+{}F2 Female Silent: log(duration)      & -0.27826 &   0.06136 &  -4.53 &     $<$ 0.001 & *** \\
+{}F2 Male Baby Boomer: log(duration)      & -0.21691 &   0.06443 &  -3.37 &     $<$ 0.001 & *** \\
+{}F2 Male Generation X: log(duration)        & -0.14861 &   0.06239 &  -2.38 &         0.017 & *   \\
+{}F2 Male Millennial: log(duration)  & -0.23935 &   0.06420 &  -3.73 &     $<$ 0.001 & *** \\
+{}F2 Male Silent: log(duration)      & -0.26132 &   0.06391 &  -4.09 &     $<$ 0.001 & *** \\
+\\
+\multicolumn{6}{l}{Approximate significance of smooth terms:}\\
+ & \textbf{edf} & \textbf{Ref.df} & \textbf{F} & \multicolumn{2}{l}{\textbf{\textit{p}-value}}\\
+{}{}F1 Female Baby Boomer      &   2.94 &   3.00 &  67.2 & $<$ 0.001 & *** \\
+{}{}F1 Female Generation X        &   2.91 &   2.99 &  46.3 & $<$ 0.001 & *** \\
+{}{}F1 Female Millennial  &   2.85 &   2.98 &  28.6 & $<$ 0.001 & *** \\
+{}{}F1 Female Silent      &   2.86 &   2.99 &  42.7 & $<$ 0.001 & *** \\
+{}{}F1 Male Baby Boomer      &   2.96 &   3.00 &  84.7 & $<$ 0.001 & *** \\
+{}{}F1 Male Generation X        &   2.86 &   2.99 &  25.8 & $<$ 0.001 & *** \\
+{}{}F1 Male Millennial  &   2.88 &   2.99 &  31.6 & $<$ 0.001 & *** \\
+{}{}F1 Male Silent      &   2.98 &   3.00 & 155.5 & $<$ 0.001 & *** \\
+{}{}F2 Female Baby Boomer      &   2.77 &   2.96 & 366.7 & $<$ 0.001 & *** \\
+{}{}F2 Female Generation X        &   1.00 &   1.01 & 891.2 & $<$ 0.001 & *** \\
+{}{}F2 Female Millennial  &   2.65 &   2.92 & 160.7 & $<$ 0.001 & *** \\
+{}{}F2 Female Silent      &   2.82 &   2.98 & 167.0 & $<$ 0.001 & *** \\
+{}{}F2 Male Baby Boomer      &   2.82 &   2.98 & 403.0 & $<$ 0.001 & *** \\
+{}{}F2 Male Generation X        &   2.57 &   2.88 & 121.2 & $<$ 0.001 & *** \\
+{}{}F2 Male Millennial  &   1.75 &   2.15 & 123.6 & $<$ 0.001 & *** \\
+{}{}F2 Male Silent      &   2.84 &   2.98 & 483.0 & $<$ 0.001 & *** \\
+s(formant,word)                                 &   135.51 & 170.00 &  25.0 & $<$ 0.001 & *** \\
+s(formant,speaker)                               &   89.06 &  92.00 &  54.7 & $<$ 0.001 & *** \\
+\\
+\multicolumn{1}{l}{Adjusted R\textsu{2} = 0.975 } &
+\multicolumn{4}{l}{Deviance explained = 97.5\%}\\
+\multicolumn{1}{l}{fREML = 26,991 } &
+\multicolumn{3}{l}{Scale est. = 0.32641} &
+\multicolumn{2}{l}{n = 46,374}\\
+            \end{tabular}
+        }
+    }
+    \caption{Summary statistics for a generalized additive mixed-effects model fit to the \bing tokens.}
+    \label{tab:summary_statistics_bing}
+\end{table}

@@ -1,0 +1,417 @@
+\chapter{Model Comparisons}
+\label{appendix:model_comarisons}
+
+% For data tables, check out the longtable package.
+
+In \S\ref{gamms_in_this_study}, I explain that the significance of a dependent variable in a GAMM can be tested with model comparisons. In this appendix, I present all model comparisons to illustrate that including sex and generation in each of these models improved the models' fits, which justifies keeping them in the final model. In all cases, these summaries were obtained by fitting two models and comparing them with the \texttt{compareML} function in the \texttt{itsadug} package in R. This function returns tables as a result of a Chi-squared test. Each of the following tables reports several numbers:
+\begin{enumerate}
+    \item The name of the model. The full model includes \texttt{formant}, \texttt{sex}, and \texttt{generation}. Models labeled ``sex only'' included \texttt{formant} and \texttt{sex}. Similarly, models labeled ``generation only'' included \texttt{formant} and \texttt{generation}. In all models, \texttt{formant} was retained because I always expect significant differences between F1 and F2. 
+    \item \textit{Score}: A number representing the amount of variance explained in the model. The numbers themselves are not meaningful as they are simply parameters of the data and the model, but the important part is that smaller scores are better, so the model that has the smaller score is the better fit.
+    \item \textit{Edf (estimated degrees of freedom):} The degrees of freedom in each model.
+    \item \textit{Difference:} The difference in score between the full model and the smaller model.
+    \item \textit{Df:} The difference in estimated degrees of freedom between the full model and the smaller model.
+    \item \textit{p-value} A number to help determine the significance of the results. Small \textit{p}-values are evidence to reject the null hypothesis that there is no difference between the two models.
+\end{enumerate}
+
+
+
+
+
+
+% BAT
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+base model & 115,124.16 & 18	 &  & & & \\
+full model & 78,184.85 & 66 & 36,939.316 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bat with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 114,922.61 & 18  &            &        &         & \\
+full model & 78,184.85  & 66  & 36,737.765  & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \bat with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+generation only & 114,696.01 & 34 &  & & & \\
+full model & 78,184.85 & 66 & 36,511.159 & 32.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bat with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \bat.}
+\end{table}
+
+
+
+% BET
+
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+base model & 160,338.94 & 18	 &  & & & \\
+full model & 82,,874.11 & 66 & 77,464.828 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bet with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 160,125.48 & 18  &            &        &         & \\
+full model & 82,874.11 & 66 & 77,464.828 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \bet with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 159,749.84 & 34 &  & & & \\
+full model & 82,874.11 & 66 & 774,64.828 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bet with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \bet.}
+\end{table}
+
+
+
+
+% BIT
+
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+base model & 163,583.71 & 18	 &  & & & \\
+full model & 78,243.15 & 66 & 85,340.556 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bit with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 163,518.95 & 18  &            &        &         & \\
+full model & 78,243.15 & 66 & 85,340.556 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \bit with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 163,583.71 & 34 &  & & & \\
+full model & 78,243.15 & 66 & 85,340.556 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bit with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \bit.}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+% BAN
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+base model & 55,966.63 & 18	 &  & & & \\
+full model & 35,223.48 & 66 & 20,743.154 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \ban with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 55,821.12 & 18  &            &        &         & \\
+full model & 35,223.48 & 66 & 20,743.154 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \ban with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 55,870.09	 & 34 &  & & & \\
+full model & 35,223.48 & 66 & 20,743.154 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \ban with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \ban.}
+\end{table}
+
+
+
+% BEN
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+base model & 93,965.18 & 18	 &  & & & \\
+full model & 40,043.10 & 66 & 53,922.080 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \ben with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 93,936.94 & 18  &            &        &         & \\
+full model & 40,043.10 & 66 & 53,922.080 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \ben with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 93,632.35	 & 34 &  & & & \\
+full model & 40,043.10 & 66 & 53,922.080 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \ben with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \ben.}
+\end{table}
+
+
+% BIN
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+base model & 33,396.22 & 18	 &  & & & \\
+full model & 18,798.88 & 66 & 14,597.342 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bin with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 33,383.81 & 18  &            &        &         & \\
+full model & 18,798.88 & 66 & 14,597.342 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \bin with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 33,287.88	 & 34 &  & & & \\
+full model & 18,798.88 & 66 & 14,597.342 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bin with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \bin.}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% BANG
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+base model & 5,559.633 & 18	 &  & & & \\
+full model & 3,293.301 & 66 & 2266.331 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bang with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 5,535.927 & 18  &            &        &         & \\
+full model & 3,293.301 & 66 & 2266.331 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \bang with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 5,524.679	 & 34 &  & & & \\
+full model & 3,293.301 & 66 & 2266.331 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bang with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \bang.}
+\end{table}
+
+
+
+
+% BING
+\begin{table}[ht]
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+base model & 33,396.22 & 18	 &  & & & \\
+full model & 18,798.88 & 66 & 14,597.342 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bing with one without either sex or generation. The small \textit{p}-value suggests that the inclusion of one or both of these variables is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+Model    & Score     & Edf & Difference & Df     & \multicolumn{2}{c}{\textit{p}-value} \\
+\hline
+sex only  & 33,383.81 & 18  &            &        &         & \\
+full model & 18,798.88 & 66 & 14,597.342 & 48.000 & $<$ 0.001 & ***
+    \end{tabular}
+    \caption{Comparing the full model of \bing with one without generation as a predictor. The small \textit{p}-value suggests that the inclusion of generation is justified in the full model.}
+    \end{subtable}
+    
+    \bigskip
+    \bigskip
+    
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{ p{3cm} r r r r r r l }
+            Model & Score & Edf & Difference & Df & \multicolumn{2}{c}{\textit{p}-value} \\
+            \hline
+generation only & 33,287.88	 & 34 &  & & & \\
+full model & 18,798.88 & 66 & 14,597.342 & 48.000 & $<$ 0.001 & ***
+        \end{tabular}
+        \caption{Comparing the full model of \bing with one without sex as a predictor. The small \textit{p}-value suggests that the inclusion of sex is justified in the full model.}
+    \end{subtable}
+
+    \caption{Model comparisons for \bing.}
+\end{table}

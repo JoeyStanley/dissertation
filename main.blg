@@ -1,0 +1,22 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[1] Config.pm:307> INFO - Logfile is 'main.blg'
+[71] biber-darwin:315> INFO - === Thu Mar 26, 2020, 14:14:05
+[121] Biber.pm:371> INFO - Reading 'main.bcf'
+[906] Biber.pm:889> INFO - Found 315 citekeys in bib section 0
+[927] Biber.pm:4093> INFO - Processing section 0
+[959] Biber.pm:4254> INFO - Looking for bibtex format file 'references.bib' for section 0
+[977] bibtex.pm:1523> INFO - LaTeX decoding ...
+[1620] bibtex.pm:1340> INFO - Found BibTeX data source 'references.bib'
+[1670] Utils.pm:193> WARN - month field 'mar' in entry 'lennes_2017' is not an integer - this will probably not sort properly.
+[2137] Utils.pm:193> WARN - year field 'ND' in entry 'metcalf_nd' is not an integer - this will probably not sort properly.
+[3061] Utils.pm:193> WARN - year field '1998--2004' in entry 'labov_1998_2004' is not an integer - this will probably not sort properly.
+[3074] Utils.pm:193> WARN - year field '1992--2018' in entry 'boersma_weenink_2018_praat' is not an integer - this will probably not sort properly.
+[3834] Utils.pm:193> WARN - BibTeX subsystem: /var/folders/26/q46p52w53qj3p9vp952d58840000gn/T/0JJtGOLfGK/references.bib_17548.utf8, line 2527, warning: undefined macro "73:sup1"
+[3836] Utils.pm:193> WARN - I didn't find a database entry for 'baker_etal_2008' (section 0)
+[4490] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[4490] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[4490] Biber.pm:3921> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[4490] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[4963] bbl.pm:636> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[5272] bbl.pm:739> INFO - Output to main.bbl
+[5286] Biber.pm:110> INFO - WARNINGS: 6
